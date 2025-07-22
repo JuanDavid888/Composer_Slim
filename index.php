@@ -18,6 +18,15 @@ $app->get('/', function(Request $req, Response $res, array $args) {
 // Capa que actua entre la solicitud y la respuesta
 // Ayuda a modificar o intersectar (validar)
 
+// Global -> a todoas las Request del Backend
+$app->add(function(Request $req, Handler $han): Response {
+    $response = $han->handle($req);
+    return $response->withHeader('Content-Type', 'application/json'); // Aplica a todo lo que vaya hacia abajo
+});
+
+// Custom Global Middleware
+$app->add(new JsonBodyParserMiddleware());
+
 // GET /campers
 // POST /campers
 // PUT /campers/1
@@ -44,6 +53,15 @@ $app->get("/campers", function(Request $req, Response $res, array $args) {
 
     $res->getBody()->write(json_encode([$name, $skill]));
     return $res;
+});
+
+$app->post("/campers", function(Request $req, Response $res, array $args) {
+    $data = $req->getParsedBody(); // Convertir parametros a un array u objeto
+    // $res->withStatus(201);
+    $res->getBody()->write(json_encode($data));
+
+    return $res->withStatus(201);
+    // return $res;
 });
 
 $app->run();
