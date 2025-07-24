@@ -16,19 +16,27 @@ class EloquentCamperRepository implements CamperRepositoryInterface
 
     public function getById(int $doc): ?Camper
     {
-        // SELECT * FROM campers WHERE id = $doc;
-        return Camper::find($doc);
+        // SELECT * FROM campers WHERE id = id;
+        // return Camper::find($doc);
+
+        // SELECT * FROM campers WHERE documento = $doc LIMIT 1,1;
+        return Camper::where('documento', $doc)->first();
     }
 
     public function create(array $data): Camper
     {
+        $exists = $this->getById($data['documento']);
+        if($exists) {
+            return $exists;
+        }
         return Camper::create($data);
     }
 
     public function update(int $doc, array $data): bool
     {
         // SELECT * FROM campers WHERE id = $doc;
-        $camper = Camper::find($doc);
+        $camper = $this->getById($data['documento']);
+
         // UPDATE campers SET nombre $data[x] ... WHERE id = $doc;
         return $camper ? $camper->update($data) : false;
     }
