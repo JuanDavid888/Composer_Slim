@@ -35,7 +35,12 @@ class EloquentCamperRepository implements CamperRepositoryInterface
     public function update(int $doc, array $data): bool
     {
         // SELECT * FROM campers WHERE id = $doc;
+        // Elije de data el documento a cambiar, pero sin cambiar documento
         $camper = $this->getById($data['documento']);
+
+        // SELECT * FROM campers WHERE documento = $doc;
+        // Elije de la url el documento, siendo posible cambiar el documento
+        // $camper = Camper::where('documento', $doc)->first();
 
         // UPDATE campers SET nombre $data[x] ... WHERE id = $doc;
         return $camper ? $camper->update($data) : false;

@@ -12,11 +12,15 @@ SELECT * FROM producto;
 
 SELECT * FROM campers;
 
+SELECT * FROM usuarios;
+
 -- Drops
 
 DROP TABLE IF EXISTS productos;
 
 DROP TABLE IF EXISTS campers;
+
+DROP TABLE IF EXISTS usuarios;
 
 -- Tables
 
@@ -38,6 +42,14 @@ CREATE TABLE campers (
     updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
 );
 
+CREATE TABLE usuarios (
+    id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
+    nombre VARCHAR(100) NOT NULL,
+    email VARCHAR(100) NOT NULL UNIQUE,
+    password VARCHAR(255) NOT NULL,
+    rol ENUM('admin', 'user') NOT NULL DEFAULT 'user'
+);
+
 
 -- Inserts
 
@@ -57,3 +69,5 @@ VALUES
 ('Andres Gomez', 23, '1008234574', 'Pasaporte', 2, 3),
 ('Maria Fernanda Ruiz', 25, '1009234575', 'Cedula', 5, 5),
 ('Jhonatan Paez', 19, '1010234576', 'Cedula', 3, 2);
+
+INSERT INTO usuarios ()
