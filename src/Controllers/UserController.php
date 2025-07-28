@@ -6,20 +6,24 @@ use App\Domain\Repositories\UserRepositoryInterface;
 
 use Psr\Http\Message\ResponseInterface as Response;
 use Psr\Http\Message\ServerRequestInterface as Request;
+use App\DTOs\UserDTO;
 
 class UserController {
     public function __construct(private UserRepositoryInterface $repo) {}
 
     public function createUser(Request $request, Response $response): Response {
 
-        // TODO: Se debe implementar con caso de USOOOOO!
         $data = $request->getParsedBody();
-        $data['rol'] = 'user';
 
-        // DTO
-        $data['password'] = password_hash($data['password'], PASSWORD_DEFAULT);
+        // TODO: Se debe implementar con caso de USOOOOO!
+        $dto = new UserDTO(
+            nombre: $data['nombre'] ?? '',
+            email: $data['correo'] ?? '',
+            password: $data['contrasena'] ?? '',
+            rol: 'user'
+        );
 
-        $user = $this->repo->create($data);
+        $user = $this->repo->create($dto);
 
         $response->getBody()->write(json_encode($user));
         return $response->withStatus(201);
